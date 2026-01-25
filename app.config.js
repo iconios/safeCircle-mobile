@@ -1,31 +1,33 @@
 export default {
-  name: "safeCircle",
-  slug: "safecircle",
-  version: "1.0.0",
-  orientation: "portrait",
-  icon: "./assets/icon.png",
-  userInterfaceStyle: "light",
-  newArchEnabled: true,
-  splash: {
-    image: "./assets/splash-icon.png",
-    resizeMode: "contain",
-    backgroundColor: "#ffffff"
+  expo: {
+    name: "safeCircle",
+    slug: "safecircle",
+    scheme: "safecircle",
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/icon.png",
+    userInterfaceStyle: "light",
+    jsEngine: "hermes",
+    newArchEnabled: false,
+    splash: {
+      image: "./assets/splash.png",
+      resizeMode: "contain",
+      backgroundColor: "#ffffff",
     },
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
       },
       edgeToEdgeEnabled: true,
-      predictiveBackGestureEnabled: false
+      predictiveBackGestureEnabled: false,
     },
     web: {
-      favicon: "./assets/favicon.png"
+      favicon: "./assets/favicon.png",
     },
-    plugins: [
-      "expo-router"
-    ]
-}
+    plugins: ["expo-router"],
+  },
+};

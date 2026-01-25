@@ -2,26 +2,42 @@
   "name": "safecircle",
   "version": "1.0.0",
   "main": "expo-router/entry",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+  "private": true,
+  "engines": {
+    "node": "18.x"
   },
   "dependencies": {
-    "expo": "~54.0.31",
-    "expo-constants": "~18.0.13",
-    "expo-linking": "~8.0.11",
-    "expo-router": "~6.0.21",
-    "expo-status-bar": "~3.0.9",
-    "react": "19.1.0",
-    "react-native": "0.81.5",
-    "react-native-safe-area-context": "~5.6.0",
-    "react-native-screens": "~4.16.0"
+    "@expo/vector-icons": "^14.1.0",
+    "babel-preset-expo": "~13.0.0",
+    "expo": "~53.0.0",
+    "expo-constants": "~17.1.8",
+    "expo-linear-gradient": "~14.1.5",
+    "expo-linking": "~7.1.7",
+    "expo-router": "~5.1.10",
+    "expo-splash-screen": "^0.30.10",
+    "expo-status-bar": "~2.2.3",
+    "react": "^18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "^0.80.2",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "^5.4.0",
+    "react-native-screens": "~4.11.1"
   },
   "devDependencies": {
-    "@types/react": "~19.1.0",
-    "typescript": "~5.9.2"
-  },
-  "private": true
+    "@types/react": "~19.1.10",
+    "metro": "^0.82.4",
+    "metro-cache": "^0.82.4",
+    "metro-cache-key": "^0.82.4",
+    "metro-config": "^0.82.4",
+    "metro-core": "^0.82.4",
+    "metro-file-map": "^0.82.4",
+    "metro-minify-terser": "^0.82.4",
+    "metro-resolver": "^0.82.4",
+    "metro-runtime": "^0.82.4",
+    "metro-source-map": "^0.82.4",
+    "metro-symbolicate": "^0.82.4",
+    "metro-transform-plugins": "^0.82.4",
+    "metro-transform-worker": "^0.82.4",
+    "typescript": "~5.8.3"
+  }
 }
