@@ -6,9 +6,9 @@ const Badge = () => {
       <View style={styles.badgeInner}>
         <View style={[styles.circle, styles.circle1]} />
         <View style={[styles.circle, styles.circle2]} />
-        
+
         <Text style={styles.shieldIcon}>🛡️</Text>
-        
+
         <View style={[styles.dot, styles.dot1]} />
         <View style={[styles.dot, styles.dot2]} />
         <View style={[styles.dot, styles.dot3]} />
@@ -18,14 +18,14 @@ const Badge = () => {
 };
 
 const styles = StyleSheet.create({
-    badge: {
-    position: 'absolute',
+  badge: {
+    position: "absolute",
     bottom: 24,
     right: 24,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 12,
     borderRadius: 16,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.15,
     shadowRadius: 16,
@@ -34,55 +34,55 @@ const styles = StyleSheet.create({
   badgeInner: {
     width: 48,
     height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
   },
   circle: {
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 999,
     borderWidth: 2,
   },
   circle1: {
     width: 48,
     height: 48,
-    borderColor: 'rgba(59, 130, 246, 0.2)',
+    borderColor: "rgba(59, 130, 246, 0.2)",
   },
   circle2: {
     width: 60,
     height: 60,
-    borderColor: 'rgba(59, 130, 246, 0.1)',
+    borderColor: "rgba(59, 130, 246, 0.1)",
   },
   shieldIcon: {
     fontSize: 32,
-    color: '#3b82f6',
+    color: "#3b82f6",
     zIndex: 10,
-    textShadowColor: 'rgba(0, 0, 0, 0.1)',
+    textShadowColor: "rgba(0, 0, 0, 0.1)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
   dot: {
-    position: 'absolute',
+    position: "absolute",
     width: 10,
     height: 10,
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: "#fff",
   },
   dot1: {
     top: -2,
     right: -2,
-    backgroundColor: '#10b981',
+    backgroundColor: "#10b981",
   },
   dot2: {
     bottom: -2,
     left: -2,
-    backgroundColor: '#60a5fa',
+    backgroundColor: "#60a5fa",
   },
   dot3: {
     top: -2,
     left: -2,
-    backgroundColor: '#ec4899',
+    backgroundColor: "#ec4899",
   },
 });
 export default Badge;

@@ -4,11 +4,12 @@ export default {
     slug: "safecircle",
     scheme: "safecircle",
     version: "1.0.0",
+    sdkVersion: "54.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
     jsEngine: "hermes",
-    newArchEnabled: false,
+    newArchEnabled: true,
     splash: {
       image: "./assets/splash.png",
       resizeMode: "contain",
@@ -16,8 +17,12 @@ export default {
     },
     ios: {
       supportsTablet: true,
+      config: {
+        usesNonExemptEncryption: false,
+      },
     },
     android: {
+      usesCleartextTraffic: true,
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#ffffff",
@@ -28,6 +33,21 @@ export default {
     web: {
       favicon: "./assets/favicon.png",
     },
-    plugins: ["expo-router"],
+    plugins: [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-secure-store",
+        {
+          configureAndroidBackup: true,
+          faceIDPermission:
+            "Allow $(name) to access your Face ID biometric data.",
+        },
+      ],
+    ],
+    extra: {
+      API_URL: process.env.API_URL || "http://192.168.0.151:3000",
+      API_KEY: process.env.API_KEY || "default-key",
+    },
   },
 };
