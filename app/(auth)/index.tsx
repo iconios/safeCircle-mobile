@@ -1,10 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import {
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from "react-native";
+import { StyleSheet, Text, useColorScheme, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, useTheme } from "react-native-paper";
 import { useRouter } from "expo-router";
@@ -20,7 +15,7 @@ export default function WelcomeAuthScreen() {
   };
 
   const handleLogin = () => {
-    router.push("/(auth)/login");
+    router.push("/(auth)/signup");
   };
 
   return (

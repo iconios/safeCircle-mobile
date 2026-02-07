@@ -46,7 +46,7 @@ export default {
       ],
     ],
     extra: {
-      API_URL: process.env.API_URL || "http://192.168.0.151:3000",
+      API_URL: process.env.API_URL || "http://192.168.100.2:3000",
       API_KEY: process.env.API_KEY || "default-key",
     },
   },

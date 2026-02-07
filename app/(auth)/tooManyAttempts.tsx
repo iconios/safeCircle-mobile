@@ -1,5 +1,5 @@
 const TooManyAttempts = () => {
-    return <TooManyAttempts />
-}
+  return <TooManyAttempts />;
+};
 
 export default TooManyAttempts;

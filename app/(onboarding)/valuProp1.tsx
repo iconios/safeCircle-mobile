@@ -80,7 +80,7 @@ const ValuePropositionScreen1 = ({ onNext }: { onNext: () => void }) => {
           marginBottom: 48,
         }}
       >
-        Next 
+        Next
       </Button>
     </SafeAreaView>
   );

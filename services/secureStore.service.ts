@@ -17,7 +17,7 @@ const retrieveFromStore = async (key: string) => {
 
     return result;
   } catch (error) {
-    console.error("Failed to retrieve deviceId", error)
+    console.error("Failed to retrieve deviceId", error);
   }
 };
 

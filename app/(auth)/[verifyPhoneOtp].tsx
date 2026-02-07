@@ -9,7 +9,6 @@ import {
   useColorScheme,
   ScrollView,
   Platform,
-  Dimensions,
   Animated,
   TextInputKeyPressEvent,
 } from "react-native";
@@ -19,14 +18,15 @@ import * as Haptics from "expo-haptics";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import useDeviceId from "../../modules/auth/hooks/useDeviceId";
+import { useMutation } from "@tanstack/react-query";
+import verifyOtpService from "../../modules/auth/services/verifyOtp.service";
+import { verifyOtpServiceInputType } from "../../modules/auth/types/verifyOtp.types";
+import { showErrorToast } from "../../services/errorToast.service";
 
-const { width } = Dimensions.get("window");
-const isSmallDevice = width < 375;
-
-export default function OTPVerificationScreen() {
+const OTPVerificationScreen = () => {
   const { verifyPhoneOtp } = useLocalSearchParams<{
-  verifyPhoneOtp: string;
-}>();
+    verifyPhoneOtp: string;
+  }>();
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === "dark";
@@ -38,6 +38,18 @@ export default function OTPVerificationScreen() {
 
   // Mock phone number from previous screen
   const phoneNumber = `+234 ${verifyPhoneOtp}`;
+
+  const mutation = useMutation({
+    mutationKey: ["verify-otp", phoneNumber],
+    mutationFn: (values: verifyOtpServiceInputType) => verifyOtpService(values),
+    onSuccess: (data) => {
+      router.replace("/(app)/(tabs)/");
+    },
+    onError: (error) => {
+      console.log({ errMessage: error.message });
+      showErrorToast({ message: error.message });
+    },
+  });
 
   useEffect(() => {
     // Start countdown timer
@@ -63,14 +75,9 @@ export default function OTPVerificationScreen() {
       useNativeDriver: true,
     }).start();
   }, []);
-  
-  const { deviceId, isReady} = useDeviceId();
-  if (!isReady) return;
 
-  const handleBack = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.back();
-  };
+  const { deviceId, isReady } = useDeviceId();
+  if (!isReady) return;
 
   const handleOTPChange = (text: string, index: number) => {
     // Remove non-numeric characters
@@ -106,12 +113,18 @@ export default function OTPVerificationScreen() {
     // Add your resend logic here
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const otpCode = otp.join("");
     if (otpCode.length === 6) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       console.log("Verifying OTP:", otpCode);
-      // Add your verification logic here
+      // Verification logic here and remove the leading + and spaces between phone number
+      const verifyData = {
+        device_id: deviceId,
+        otp: otpCode,
+        phone_number: phoneNumber.replace(/^\+|\s/g, ""),
+      };
+      await mutation.mutateAsync(verifyData);
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       // Show error or shake animation
@@ -140,21 +153,6 @@ export default function OTPVerificationScreen() {
           { opacity: fadeAnim },
         ]}
       >
-        {/* Header with Back Button */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={handleBack}
-            activeOpacity={0.7}
-          >
-            <MaterialIcons
-              name="chevron-left"
-              size={32}
-              color={isDarkMode ? "#fff" : "#1f2937"}
-            />
-          </TouchableOpacity>
-        </View>
-
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
@@ -298,12 +296,12 @@ export default function OTPVerificationScreen() {
       </Animated.View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f3f4f6",
+    backgroundColor: "#ffffff",
   },
   safeAreaDark: {
     backgroundColor: "#111827",
@@ -421,11 +419,10 @@ const styles = StyleSheet.create({
   otpInputs: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: isSmallDevice ? 8 : 12,
   },
   otpInput: {
-    width: isSmallDevice ? 48 : 56,
-    height: isSmallDevice ? 64 : 72,
+    width: 40,
+    height: 64,
     fontSize: 24,
     fontWeight: "700",
     textAlign: "center",
@@ -550,3 +547,5 @@ const styles = StyleSheet.create({
     color: "#9ca3af",
   },
 });
+
+export default OTPVerificationScreen;

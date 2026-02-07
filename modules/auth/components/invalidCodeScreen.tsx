@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,16 +9,16 @@ import {
   Dimensions,
   Animated,
   StatusBar,
-} from 'react-native';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+} from "react-native";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const MAX_WIDTH = 400;
 
 export default function InvalidCodeScreen() {
   const [shakeAnimation] = useState(new Animated.Value(0));
-  const [code, setCode] = useState(['8', '2', '0', '5', '9', '1']);
+  const [code, setCode] = useState(["8", "2", "0", "5", "9", "1"]);
 
   const triggerShake = () => {
     Animated.sequence([
@@ -79,9 +79,9 @@ export default function InvalidCodeScreen() {
             >
               <MaterialIcons name="arrow-back" size={24} color="#000" />
             </TouchableOpacity>
-            
+
             <Text style={styles.title}>Verify Phone</Text>
-            
+
             <TouchableOpacity
               style={styles.helpButton}
               onPress={handleHelp}
@@ -94,29 +94,25 @@ export default function InvalidCodeScreen() {
           {/* Main Content */}
           <View style={styles.content}>
             {/* Error Status */}
-            <Animated.View 
+            <Animated.View
               style={[
                 styles.errorContainer,
-                { transform: [{ translateX: shakeAnimation }] }
+                { transform: [{ translateX: shakeAnimation }] },
               ]}
             >
               <View style={styles.errorIconContainer}>
                 <View style={styles.errorIconCircle}>
-                  <MaterialIcons 
-                    name="lock-open" 
-                    size={48} 
-                    color="#dc2626" 
-                  />
+                  <MaterialIcons name="lock-open" size={48} color="#dc2626" />
                   <View style={styles.errorBadge}>
-                    <MaterialIcons 
-                      name="priority-high" 
-                      size={14} 
-                      color="#000" 
+                    <MaterialIcons
+                      name="priority-high"
+                      size={14}
+                      color="#000"
                     />
                   </View>
                 </View>
               </View>
-              
+
               <View style={styles.errorTextContainer}>
                 <Text style={styles.errorTitle}>Incorrect code</Text>
                 <Text style={styles.errorDescription}>
@@ -131,10 +127,7 @@ export default function InvalidCodeScreen() {
                 {code.map((digit, index) => (
                   <View key={index} style={styles.inputWrapper}>
                     <TextInput
-                      style={[
-                        styles.codeInput,
-                        styles.codeInputError
-                      ]}
+                      style={[styles.codeInput, styles.codeInputError]}
                       value={digit}
                       editable={false}
                       keyboardType="numeric"
@@ -149,14 +142,15 @@ export default function InvalidCodeScreen() {
             {/* Security Note */}
             <View style={styles.securityNote}>
               <View style={styles.noteContainer}>
-                <MaterialCommunityIcons 
-                  name="shield-check" 
-                  size={24} 
-                  color="#64748b" 
+                <MaterialCommunityIcons
+                  name="shield-check"
+                  size={24}
+                  color="#64748b"
                   style={styles.shieldIcon}
                 />
                 <Text style={styles.noteText}>
-                  For your security, too many attempts may temporarily lock your account.
+                  For your security, too many attempts may temporarily lock your
+                  account.
                 </Text>
               </View>
             </View>
@@ -172,7 +166,7 @@ export default function InvalidCodeScreen() {
               <View style={styles.buttonShine} />
               <Text style={styles.primaryButtonText}>Try Again</Text>
             </TouchableOpacity>
-            
+
             <View style={styles.secondaryButtonContainer}>
               <TouchableOpacity
                 style={styles.secondaryButton}
@@ -180,11 +174,7 @@ export default function InvalidCodeScreen() {
                 activeOpacity={0.7}
               >
                 <Text style={styles.secondaryButtonText}>Resend Code</Text>
-                <MaterialIcons 
-                  name="refresh" 
-                  size={20} 
-                  color="#1e293b" 
-                />
+                <MaterialIcons name="refresh" size={20} color="#1e293b" />
               </TouchableOpacity>
             </View>
           </View>
@@ -197,21 +187,21 @@ export default function InvalidCodeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f6f8f6',
+    backgroundColor: "#f6f8f6",
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 16,
   },
   mainContainer: {
-    width: '100%',
+    width: "100%",
     flex: 1,
-    backgroundColor: '#f6f8f6',
-    shadowColor: '#000',
+    backgroundColor: "#f6f8f6",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -219,9 +209,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 16,
     paddingBottom: 8,
   },
@@ -229,96 +219,96 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
   title: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#000',
-    textAlign: 'center',
+    fontWeight: "700",
+    color: "#000",
+    textAlign: "center",
     flex: 1,
   },
   helpButton: {
     height: 48,
     paddingHorizontal: 8,
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
   helpText: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#61896f',
+    fontWeight: "700",
+    color: "#61896f",
   },
   content: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 24,
     paddingVertical: 24,
   },
   errorContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     gap: 24,
     marginBottom: 40,
-    width: '100%',
+    width: "100%",
   },
   errorIconContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   errorIconCircle: {
     width: 96,
     height: 96,
     borderRadius: 48,
-    backgroundColor: '#fee2e2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
+    backgroundColor: "#fee2e2",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
     borderWidth: 1,
-    borderColor: '#fecaca',
-    position: 'relative',
+    borderColor: "#fecaca",
+    position: "relative",
   },
   errorBadge: {
-    position: 'absolute',
+    position: "absolute",
     top: -4,
     right: -4,
-    backgroundColor: '#13ec5b',
+    backgroundColor: "#13ec5b",
     borderRadius: 12,
     padding: 4,
     borderWidth: 2,
-    borderColor: '#f6f8f6',
+    borderColor: "#f6f8f6",
   },
   errorTextContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     gap: 12,
     maxWidth: 480,
   },
   errorTitle: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#000',
-    textAlign: 'center',
+    fontWeight: "700",
+    color: "#000",
+    textAlign: "center",
   },
   errorDescription: {
     fontSize: 16,
-    color: '#64748b',
-    textAlign: 'center',
+    color: "#64748b",
+    textAlign: "center",
     lineHeight: 24,
     maxWidth: 320,
   },
   inputsContainer: {
-    width: '100%',
+    width: "100%",
     marginBottom: 40,
   },
   inputsWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     gap: 12,
   },
   inputWrapper: {
@@ -327,82 +317,82 @@ const styles = StyleSheet.create({
   codeInput: {
     height: 56,
     fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
+    fontWeight: "700",
+    textAlign: "center",
     padding: 0,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   codeInputError: {
-    color: '#dc2626',
+    color: "#dc2626",
     borderBottomWidth: 2,
-    borderBottomColor: '#ef4444',
+    borderBottomColor: "#ef4444",
   },
   securityNote: {
-    width: '100%',
+    width: "100%",
   },
   noteContainer: {
-    backgroundColor: '#f1f5f9',
+    backgroundColor: "#f1f5f9",
     borderRadius: 12,
     padding: 16,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     gap: 12,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: "#e2e8f0",
   },
   shieldIcon: {
     marginTop: 2,
   },
   noteText: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#475569',
+    fontWeight: "500",
+    color: "#475569",
     lineHeight: 20,
     flex: 1,
   },
   footer: {
     padding: 16,
     paddingBottom: 32,
-    marginTop: 'auto',
-    width: '100%',
+    marginTop: "auto",
+    width: "100%",
   },
   primaryButton: {
-    width: '100%',
+    width: "100%",
     height: 56,
-    backgroundColor: '#13ec5b',
+    backgroundColor: "#13ec5b",
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    shadowColor: '#13ec5b',
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    shadowColor: "#13ec5b",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 4,
   },
   buttonShine: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   primaryButtonText: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#111813',
+    fontWeight: "700",
+    color: "#111813",
     letterSpacing: 0.15,
   },
   secondaryButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 8,
   },
   secondaryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -410,7 +400,7 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     fontSize: 14,
-    fontWeight: '700',
-    color: '#1e293b',
+    fontWeight: "700",
+    color: "#1e293b",
   },
 });

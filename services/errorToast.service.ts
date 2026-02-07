@@ -1,25 +1,24 @@
-import { Toast } from "toastify-react-native";
-import { toastServiceInputSchema } from "../types/toast.types";
+import Toast from "react-native-toast-message";
+import {
+  toastServiceInputSchema,
+  toastServiceInputType,
+} from "../types/toast.types";
+import { ZodError } from "zod";
 
-export const showErrorToast = (input: unknown) => {
-  const result = toastServiceInputSchema.safeParse(input);
+export const showErrorToast = (input: toastServiceInputType) => {
+  try {
+    const { message } = toastServiceInputSchema.parse(input);
 
-  if (!result.success) {
-    console.warn("Invalid toast input", result.error);
-    return;
+    Toast.show({
+      type: "error",
+      text1: message,
+      position: "top",
+    });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.error("Toast message validation failed");
+    }
+
+    console.error("Message cannot be empty for toast", error);
   }
-
-  const { message } = result.data;
-
-  Toast.show({
-    type: "error",
-    text1: message,
-    position: "top",
-    backgroundColor: "red",
-    textColor: "white",
-    icon: "exclamation-circle",
-    iconColor: "white",
-    iconFamily: "FontAwesome",
-    iconSize: 48,
-  });
 };

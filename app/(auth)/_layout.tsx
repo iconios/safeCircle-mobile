@@ -19,7 +19,8 @@ export default function RootLayout() {
       <Stack.Screen
         name="[verifyPhoneOtp]"
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: "",
         }}
       />
       <Stack.Screen

@@ -36,10 +36,11 @@ export default function PhoneVerificationScreen() {
   const colorScheme = useColorScheme();
   const router = useRouter();
   const isDarkMode = colorScheme === "dark";
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedChannel, setSelectedChannel] = useState<"whatsapp" | "sms">(
     "whatsapp",
   );
-  const COUNTRY_CODE = "234";  
+  const COUNTRY_CODE = "234";
 
   const openUrlSafely = async (url: string) => {
     try {
@@ -76,16 +77,20 @@ export default function PhoneVerificationScreen() {
   };
 
   const mutation = useMutation({
-    mutationFn: async (values: signupUserDataType) =>
-      await signupService(values),
+    mutationFn: (values: signupUserDataType) => signupService(values),
     mutationKey: ["phone-auth"],
     onSuccess: () => {
+      router.push({
+        pathname: "/(auth)/[verifyPhoneOtp]",
+        params: { verifyPhoneOtp: phoneNumber },
+      });
     },
     onError: (error) => {
-      showErrorToast({ message: error });
+      console.log({ errMessage: error.message });
+      showErrorToast({ message: error.message });
     },
   });
-  
+
   const { deviceId, isReady } = useDeviceId();
   if (!isReady) return null;
   const isDeviceReady = Boolean(deviceId);
@@ -104,19 +109,20 @@ export default function PhoneVerificationScreen() {
             try {
               setSubmitting(true);
               await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
               const phoneNoSpace = values.phone_number.replace(/\s/g, "");
               const signupData = {
                 phone_number: `${COUNTRY_CODE}${phoneNoSpace}`,
                 channel: selectedChannel,
                 device_id: deviceId,
               };
-              console.log("Sending verification code", signupData);
-              await mutation.mutateAsync(signupData);
 
-              router.push({
-                pathname: "/(auth)/[verifyPhoneOtp]",
-                params: {verifyPhoneOtp: values.phone_number}
-              });
+              setPhoneNumber(phoneNoSpace);
+
+              await mutation.mutateAsync(signupData);
+            } catch {
+              // ⛔ Do NOTHING here
+              // Toast already shown by onError
             } finally {
               setSubmitting(false);
             }
@@ -414,7 +420,12 @@ export default function PhoneVerificationScreen() {
                       (!isValid || isSubmitting) && { opacity: 0.6 },
                     ]}
                     onPress={submitForm}
-                    disabled={!isValid || isSubmitting || !isDeviceReady || !values.phone_number}
+                    disabled={
+                      !isValid ||
+                      isSubmitting ||
+                      !isDeviceReady ||
+                      !values.phone_number
+                    }
                     activeOpacity={0.9}
                   >
                     <Text style={styles.sendButtonText}>
@@ -451,7 +462,7 @@ export default function PhoneVerificationScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#f9fafb" },
+  safeArea: { flex: 1, backgroundColor: "#ffffff" },
   safeAreaDark: { backgroundColor: "#111827" },
   container: {
     flex: 1,
@@ -464,8 +475,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
+    paddingTop: 8,
   },
-  containerDark: { backgroundColor: "#1f2937" },
+  containerDark: { backgroundColor: "#1f2937", paddingTop: 8 },
   scrollView: { flex: 1 },
   scrollContent: { flexGrow: 1 },
   mainContent: { paddingHorizontal: 24, paddingTop: 8 },

@@ -5,22 +5,13 @@
 3. Return the server response to the client
 */
 
-import { ZodError } from "zod";
 import {
   signUpAuthServerResponseType,
   signupServiceInputSchema,
   signupServiceInputType,
 } from "../types/signup.types";
-import Constants from "expo-constants";
-
-const validateApiUrl = () => {
-  const apiUrl = Constants.expoConfig?.extra?.API_URL;
-  if (!apiUrl) {
-    throw new Error("Api Url required");
-  }
-
-  return apiUrl;
-};
+import validateApiUrl from "../../../services/validateApiUrl.service";
+import { authServicesCaughtErrors } from "../helpers/serviceCaughtErrors";
 
 const signupService = async (signupUserData: signupServiceInputType) => {
   const API_URL = validateApiUrl();
@@ -39,27 +30,17 @@ const signupService = async (signupUserData: signupServiceInputType) => {
       body: JSON.stringify(validatedInput),
     });
 
+    // 3. Return the server response to the client
     const result: signUpAuthServerResponseType = await response.json();
     console.log("Signup data", result);
 
-    if (!result.success || result.error) {
+    if (!result.success) {
       throw new Error(result.message || "Signup request failed");
     }
 
     return result.message;
   } catch (error) {
-    if (error instanceof ZodError) {
-      console.error("Signup validation error:", error.flatten());
-      throw new Error("Signup data validation failed");
-    }
-
-    if (error instanceof Error) {
-      console.error("signupService error:", error.message);
-      throw new Error(error.message);
-    }
-
-    console.error("Unknown signup error:", error);
-    throw new Error("Unexpected error while processing signup data");
+    authServicesCaughtErrors(error, "signupService", "signup");
   }
 };
 

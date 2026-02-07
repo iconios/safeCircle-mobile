@@ -7,6 +7,10 @@ import { useFonts } from "expo-font";
 import { Asset } from "expo-asset";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "../config/toast.config";
+import { Provider } from "react-redux";
+import store from "../store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -82,10 +86,13 @@ function RootLayout() {
 
 export default function Main() {
   return (
-    <QueryClientProvider client={new QueryClient()}>
-      <PaperProvider theme={AppTheme}>
-        <RootLayout />
-      </PaperProvider>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={new QueryClient()}>
+        <PaperProvider theme={AppTheme}>
+          <RootLayout />
+          <Toast config={toastConfig} />
+        </PaperProvider>
+      </QueryClientProvider>
+    </Provider>
   );
 }
