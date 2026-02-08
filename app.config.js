@@ -29,6 +29,15 @@ export default {
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
+      permissions: [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "READ_CONTACTS",
+        "WRITE_CONTACTS",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+      ],
     },
     web: {
       favicon: "./assets/favicon.png",
@@ -42,6 +51,25 @@ export default {
           configureAndroidBackup: true,
           faceIDPermission:
             "Allow $(name) to access your Face ID biometric data.",
+        },
+      ],
+      [
+        "expo-location",
+        {
+          locationAlwaysAndWhenInUsePermission:
+            "Allow $(PRODUCT_NAME) to use your location.",
+          locationAlwaysPermission:
+            "Allow $(PRODUCT_NAME) to use your location.",
+          locationWhenInUsePermission:
+            "Allow $(PRODUCT_NAME) to use your location.",
+          isIosBackgroundLocationEnabled: true,
+          isAndroidBackgroundLocationEnabled: true,
+        },
+      ],
+      [
+        "expo-contacts",
+        {
+          contactsPermission: "Allow $(PRODUCT_NAME) to access your contacts.",
         },
       ],
     ],

@@ -22,16 +22,15 @@ import { useMutation } from "@tanstack/react-query";
 import verifyOtpService from "../../modules/auth/services/verifyOtp.service";
 import { verifyOtpServiceInputType } from "../../modules/auth/types/verifyOtp.types";
 import { showErrorToast } from "../../services/errorToast.service";
-import { useSelector } from "react-redux";
-import { storeData } from "../../modules/auth/types/common.types";
+import { usePermissions } from "../../modules/auth/contexts/permissionContext";
+import { ActivityIndicator } from "react-native-paper";
 
 const OTPVerificationScreen = () => {
-  const isLoggedIn = useSelector((state: storeData) => state.auth.isLoggedIn);
+  const { requestAllPermissions } = usePermissions();
   const { verifyPhoneOtp } = useLocalSearchParams<{
     verifyPhoneOtp: string;
   }>();
   const router = useRouter();
-  const [loggedIn, setLoggedIn] = useState(false);
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === "dark";
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -46,8 +45,13 @@ const OTPVerificationScreen = () => {
   const mutation = useMutation({
     mutationKey: ["verify-otp", phoneNumber],
     mutationFn: (values: verifyOtpServiceInputType) => verifyOtpService(values),
-    onSuccess: (data) => {
-      router.replace("");
+    onSuccess: async () => {
+      const result = await requestAllPermissions();
+      if (!result.location.granted || !result.contacts.granted) {
+        router.replace("/(auth)/permissions");
+      } else {
+        router.replace("/(app)/(tabs)/");
+      }
     },
     onError: (error) => {
       console.log({ errMessage: error.message });
@@ -81,7 +85,13 @@ const OTPVerificationScreen = () => {
   }, []);
 
   const { deviceId, isReady } = useDeviceId();
-  if (!isReady) return;
+  if (!isReady) {
+  return (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
+}
 
   const handleOTPChange = (text: string, index: number) => {
     // Remove non-numeric characters
@@ -118,20 +128,28 @@ const OTPVerificationScreen = () => {
   };
 
   const handleVerify = async () => {
-    const otpCode = otp.join("");
-    if (otpCode.length === 6) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      console.log("Verifying OTP:", otpCode);
-      // Verification logic here and remove the leading + and spaces between phone number
-      const verifyData = {
-        device_id: deviceId,
-        otp: otpCode,
-        phone_number: phoneNumber.replace(/^\+|\s/g, ""),
-      };
-      await mutation.mutateAsync(verifyData);
-    } else {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      // Show error or shake animation
+    try {
+      const otpCode = otp.join("");
+      if (otpCode.length === 6) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        console.log("Verifying OTP:", otpCode);
+        // Verification logic here and remove the leading + and spaces between phone number
+        const verifyData = {
+          device_id: deviceId,
+          otp: otpCode,
+          phone_number: phoneNumber.replace(/^\+|\s/g, ""),
+        };
+        return await mutation.mutateAsync(verifyData);
+      } else {
+        showErrorToast({ message: "Please enter a valid 6-digit code" });
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Error verifying otp. Please try again";
+      showErrorToast({ message: errorMessage });
     }
   };
 
@@ -276,9 +294,16 @@ const OTPVerificationScreen = () => {
             style={styles.verifyButton}
             onPress={handleVerify}
             activeOpacity={0.9}
+            disabled={mutation.isPending}
           >
-            <Text style={styles.verifyButtonText}>Verify & Continue</Text>
-            <MaterialIcons name="arrow-forward" size={24} color="white" />
+            {mutation.isPending ? (
+              <ActivityIndicator color="white" size="small" />
+            ) : (
+              <>
+                <Text style={styles.verifyButtonText}>Verify & Continue</Text>
+                <MaterialIcons name="arrow-forward" size={24} color="white" />
+              </>
+            )}
           </TouchableOpacity>
 
           <View style={styles.securityFooter}>
@@ -550,6 +575,11 @@ const styles = StyleSheet.create({
   securityTextDark: {
     color: "#9ca3af",
   },
+  loadingContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
 });
 
 export default OTPVerificationScreen;
