@@ -22,12 +22,16 @@ import { useMutation } from "@tanstack/react-query";
 import verifyOtpService from "../../modules/auth/services/verifyOtp.service";
 import { verifyOtpServiceInputType } from "../../modules/auth/types/verifyOtp.types";
 import { showErrorToast } from "../../services/errorToast.service";
+import { useSelector } from "react-redux";
+import { storeData } from "../../modules/auth/types/common.types";
 
 const OTPVerificationScreen = () => {
+  const isLoggedIn = useSelector((state: storeData) => state.auth.isLoggedIn);
   const { verifyPhoneOtp } = useLocalSearchParams<{
     verifyPhoneOtp: string;
   }>();
   const router = useRouter();
+  const [loggedIn, setLoggedIn] = useState(false);
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === "dark";
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -43,7 +47,7 @@ const OTPVerificationScreen = () => {
     mutationKey: ["verify-otp", phoneNumber],
     mutationFn: (values: verifyOtpServiceInputType) => verifyOtpService(values),
     onSuccess: (data) => {
-      router.replace("/(app)/(tabs)/");
+      router.replace("");
     },
     onError: (error) => {
       console.log({ errMessage: error.message });

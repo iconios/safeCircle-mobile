@@ -11,6 +11,7 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "../config/toast.config";
 import { Provider } from "react-redux";
 import store from "../store";
+import { PermissionProvider } from "../modules/auth/contexts/permissionContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -89,8 +90,10 @@ export default function Main() {
     <Provider store={store}>
       <QueryClientProvider client={new QueryClient()}>
         <PaperProvider theme={AppTheme}>
-          <RootLayout />
-          <Toast config={toastConfig} />
+          <PermissionProvider>
+            <RootLayout />
+            <Toast config={toastConfig} />
+          </PermissionProvider>
         </PaperProvider>
       </QueryClientProvider>
     </Provider>

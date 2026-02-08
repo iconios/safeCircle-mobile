@@ -5,8 +5,8 @@
 3. Return the server response to the client
 */
 
+import { useDispatch } from "react-redux";
 import validateApiUrl from "../../../services/validateApiUrl.service";
-import store from "../../../store";
 import { authServicesCaughtErrors } from "../helpers/serviceCaughtErrors";
 import { authActions } from "../store/authSlice";
 import {
@@ -18,6 +18,7 @@ import {
 const verifyOtpService = async (verifyOtpData: verifyOtpServiceInputType) => {
   const API_URL = validateApiUrl();
   console.log("API URL:", API_URL);
+  const dispatch = useDispatch();
 
   try {
     // 1. Receive and validate the user data
@@ -40,7 +41,7 @@ const verifyOtpService = async (verifyOtpData: verifyOtpServiceInputType) => {
       throw new Error(result.message || "Verify otp request failed");
     }
 
-    store.dispatch(authActions.loggedIn(result.data));
+    dispatch(authActions.loggedIn(result.data));
     return result.data;
   } catch (error) {
     authServicesCaughtErrors(error, "verifyOtpService", "verify otp");
